@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>表单验证作业</title>
+    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+</head>
+<body>
+    <form id="validationForm" onsubmit="return validateForm()">
+        <div>
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username">
+            <span id="usernameError"></span>
+        </div>
+
+        <div>
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password">
+            <span id="passwordError"></span>
+        </div>
+
+        <div>
+            <label for="email">邮箱:</label>
+            <input type="email" id="email" name="email">
+            <span id="emailError"></span>
+        </div>
+
+        <div>
+            <label for="phone">手机号:</label>
+            <input type="tel" id="phone" name="phone">
+            <span id="phoneError"></span>
+        </div>
+
+        <button type="submit">提交</button>
+    </form>
+
+    <script>
+        function validateForm() {
+            // TODO: 验证表单
+            clearErrors()
+            
+            let isValid = true
+            
+            const username = document.getElementById('username').value
+            if(!/^[a-zA-Z][a-zA-Z0-9_]{4,16}$/.test(username)){
+                isValid = false;
+                showError('usernameError', '用户名格式错误（4-16位字母、数字或下划线；必须以字母开头）');
+            }
+
+            const password = document.getElementById('password').value
+            if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password)){
+                isValid = false;
+                showError('passwordError', '密码格式错误（至少6位，必须包含字母和数字）');
+            }
+
+            const email = document.getElementById('email').value
+            if(!validator.isEmail(email)){
+                isValid = false;
+                showError('emailError', '邮箱格式不正确')
+            }
+
+            const phone = document.getElementById('phone').value
+            if(!validator.isMobilePhone(phone, 'zh-CN')){
+                isValid = false;
+                showError('phoneError', '中国大陆手机号格式不正确')
+            }
+
+            return isValid
+        }
+
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('span[id$="Error"]');
+            errorElements.forEach(element => element.textContent = '');
+        }
+    </script>
+</body>
+</html>
