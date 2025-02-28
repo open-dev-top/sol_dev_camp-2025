@@ -17,3 +17,10 @@
 - DOM
 
 2.Advanced
+
+#### Typescript
+## Run
+```
+
+
+-
